@@ -3,9 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-/* ===========================================
-   CODES DES UNITÉS LEXICALES
-   =========================================== */
+
 
 #define PROGRAM   1
 #define ID        2
@@ -37,9 +35,7 @@
 #define FINPRG    100
 #define ERROR     900
 
-/* ===========================================
-   TABLE DES MOTS-CLÉS
-   =========================================== */
+
 
 char *motcles[] =
 {
@@ -57,33 +53,25 @@ int codemc[] =
 
 #define NBCLE 15
 
-/* ===========================================
-   TABLE DES IDENTIFICATEURS
-   =========================================== */
+
 
 char tab_id[200][30];
 int nb_id = 0;
 
-/* ===========================================
-   STRUCTURE UNILEX
-   =========================================== */
+
 
 typedef struct {
-    int ul;     // unité lexicale
-    int att;    // attribut (index ou valeur numérique)
+    int ul;     
+    int att;    
 } unilex;
 
-/* ===========================================
-   VARIABLES GLOBALES
-   =========================================== */
+
 
 FILE *fp;
 char lexeme[50];
 char car;
 
-/* ===========================================
-   UTILITAIRES
-   =========================================== */
+
 
 void reculer() {
     fseek(fp, -1, SEEK_CUR);
@@ -110,9 +98,42 @@ int ranger_id(char *s) {
     return nb_id - 1;
 }
 
-/* ===========================================
-   ANALYSEUR LEXICAL (AUTOMATE)
-   =========================================== */
+char *get_symbole(unilex u) {
+    static char buf[20];
+    switch (u.ul) {
+        case ID: return "id";
+        case NB: return "nb";
+        case OPADD: return "opadd";
+        case OPREL: return "oprel";
+        case OPMUL: return "opmul";
+        case PV: return ";";
+        case VIRG: return ",";
+        case PO: return "(";
+        case PF: return ")";
+        case PT: return ".";
+        case DP: return ":";
+        case PROGRAM: return "program";
+        case VAR: return "var";
+        case INTEGER: return "integer";
+        case CHAR_: return "char";
+        case BEGIN_: return "begin";
+        case END_: return "end";
+        case IF: return "if";
+        case THEN: return "then";
+        case ELSE: return "else";
+        case WHILE: return "while";
+        case DO: return "do";
+        case READ: return "read";
+        case READLN: return "readln";
+        case WRITE: return "write";
+        case WRITELN: return "writeln";
+        default:
+            sprintf(buf, "unknown_%d", u.ul);
+            return buf;
+    }
+}
+
+
 
 unilex analex()
 {
@@ -163,15 +184,15 @@ unilex analex()
                 else if (car=='('){ u.ul=PO; return u; }
                 else if (car==')'){ u.ul=PF; return u; }
                 else if (car=='.'){ u.ul=PT; return u; }
-                else if (car==':'){ etat = 10; break; }
+                else if (car==':'){ u.ul=DP; return u; }
 
                 else {
-                    printf("\nErreur lexicale : caractère inconnu '%c'\n",car);
+                    printf("\nErreur lexicale : caractere inconnu '%c'\n",car);
                     exit(1);
                 }
                 break;
 
-            /* IDENTIFICATEUR ou MOT-CLÉ */
+           
             case 1:
                 car = lire_car();
                 if (isalnum(car)) {
@@ -192,7 +213,7 @@ unilex analex()
                 }
                 break;
 
-            /* NOMBRE */
+            
             case 3:
                 car = lire_car();
                 if (isdigit(car)) {
@@ -206,7 +227,7 @@ unilex analex()
                 }
                 break;
 
-            /* <, <= ou <> */
+            
             case 5:
                 car = lire_car();
                 if (car=='='){ u.ul=OPREL; u.att=1; return u; }
@@ -216,7 +237,7 @@ unilex analex()
                 u.att = 3; // <
                 return u;
 
-            /* > ou >= */
+            
             case 8:
                 car = lire_car();
                 if (car=='='){ u.ul=OPREL; u.att=4; return u; }
@@ -224,21 +245,13 @@ unilex analex()
                 u.ul = OPREL;
                 u.att = 5; // >
                 return u;
-
-            /* : ou := */
-            case 10:
-                car = lire_car();
-                if (car=='='){ u.ul=AFF; return u; }
-                reculer();
-                u.ul = DP;
-                return u;
         }
     }
 }
 
 int main() {
     char fichier[50];
-    printf("Nom du fichier source : ");
+    
     scanf("%s", fichier);
 
     fp = fopen(fichier, "r");
@@ -247,12 +260,14 @@ int main() {
     unilex u;
     do {
         u = analex();
-        printf("UL = %d , ATT = %d\n", u.ul, u.att);
-    } while (u.ul != FINPRG);
+        if (u.ul == FINPRG) break;
+        printf("%s\n", get_symbole(u));
+    } while (1);
 
     printf("\n--- Table des identificateurs ---\n");
     for (int i=0;i<nb_id;i++)
         printf("%d : %s\n", i, tab_id[i]);
 
+    fclose(fp);
     return 0;
 }

@@ -35,11 +35,15 @@ void proc_en_cours(const char *nom_proc)
 }
 
 void suivant()
-{ if(strcmp(symbole, "fin prg") == 0)
+{ 
+    if(strcmp(symbole, "fin prg") == 0)
         return;
-  printf("donner le symbole suivant:\n");
-  scanf("%s", symbole);
-  pos_erreur = pos_erreur + 1;
+    int res = scanf("%s", symbole);
+    if (res != 1) {
+        strcpy(symbole, "fin prg");
+        return;
+    }
+    pos_erreur = pos_erreur + 1;
 }
 
  void erreur(const char *message , const char *conseil)
@@ -74,6 +78,8 @@ void accepter(const char *attendu)
 
         if (strcmp(attendu, "then") == 0)
             strcpy(conseil, "Vous avez oublie 'then' apres la condition 'if'.");
+        else if (strcmp(attendu, "do") == 0)
+            strcpy(conseil, "Vous avez oublie 'do' apres la condition 'while'.");
         else if (strcmp(attendu, "do") == 0)
             strcpy(conseil, "Vous avez oublie 'do' apres la condition 'while'.");
         else if (strcmp(attendu, ";") == 0)
@@ -112,6 +118,13 @@ void DCL_1()
     if(strcmp(symbole, "var")==0)
     {
         accepter("var");
+        Liste_Id();
+        accepter(":");
+
+        type();
+        accepter(";");
+        DCL_1();
+    } else if (strcmp(symbole, "id") == 0) {  
         Liste_Id();
         accepter(":");
 
@@ -183,6 +196,9 @@ void Liste_Inst_1()
     if(strcmp(symbole, ";")==0)
     {
         accepter(";");
+        if(strcmp(symbole, "end") == 0) {  
+            return;
+        }
         I();
         Liste_Inst_1();
     }
@@ -195,7 +211,7 @@ void I()
     {
         accepter("id");
         accepter(":");
-        accepter("=");
+        accepter("oprel");
         Exp_Simple();
     }
     else if (strcmp(symbole, "if")==0)
@@ -219,13 +235,16 @@ void I()
     {
         accepter(symbole);
         accepter("(");
-        accepter("id");
+        Exp_Simple();
         accepter(")");
+    }
+    else if (strcmp(symbole, "begin")==0) {  
+        Inst_Composee();
     }
     else
     {
        
-        erreur("Instruction invalide", "Verifiez la syntaxe de l'instruction (id, if, while, read/write).");
+        erreur("Instruction invalide", "Verifiez la syntaxe de l'instruction (id, if, while, read/write, or begin-end block).");
 
     }
 }
@@ -303,14 +322,13 @@ void Facteur()
     else
     {
         
-       erreur("Facteur invalide", "Un facteur doit être un identifiant, un nombre ou une expression entre parenthèses.");
+       erreur("Facteur invalide", "Un facteur doit etre un identifiant, un nombre ou une expression entre parentheses.");
 
     }
 }
 
 int main()
 {
-    printf("entrez votre serie de symboles du prg: \n");
     suivant();
     P();
     return 0;

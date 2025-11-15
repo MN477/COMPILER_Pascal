@@ -1,13 +1,17 @@
-program Test;
+program test1;
 var
-  a, b: integer;
-  c: char;
+  num, counter: integer;
+  letter: char;
 begin
-  a := 10;
-  b := 20;
-  c := 'x';
-  if a < b then
-    write(a)
+  num := 10;
+  counter := 0;
+  read(letter);
+  if num > 5 then
+    while counter < num do
+      begin
+        counter := counter + 1;
+        write(counter);
+      end
   else
-    writeln(b);
+    writeln(letter);
 end.
