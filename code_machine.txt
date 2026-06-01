@@ -1,0 +1,52 @@
+Valeurg @0
+Empiler 5
+:=
+Valeurg @1
+Empiler 10
+:=
+Valeurd @0
+Valeurd @1
+Comparer-si-inf
+Aller-si-faux L1
+Valeurg @0
+Valeurd @0
+Empiler 1
++
+:=
+Aller-a L0
+Etiq L1
+Valeurg @1
+Valeurd @1
+Empiler 1
++
+:=
+Etiq L0
+Valeurg @2
+Empiler 1
+:=
+Valeurg @3
+Empiler 0
+:=
+Etiq L2
+Valeurd @2
+Empiler 5
+Comparer-si-infe
+Aller-si-faux L3
+Valeurg @3
+Valeurd @3
+Valeurd @2
++
+:=
+Valeurg @2
+Valeurd @2
+Empiler 1
++
+:=
+Aller-a L2
+Etiq L3
+Valeurd @3
+Writeln
+Readln ch
+Valeurd @4
+Writeln
+Halt

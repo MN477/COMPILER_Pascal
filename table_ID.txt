@@ -1,0 +1,9 @@
+--- TABLE DES IDENTIFIANTS ---
+| Nom                  | Type       | Adresse  | Declare  |
+|----------------------|------------|----------|----------|
+| a                    | INTEGER    | 0        | OUI      |
+| b                    | INTEGER    | 1        | OUI      |
+| i                    | INTEGER    | 2        | OUI      |
+| sum                  | INTEGER    | 3        | OUI      |
+| ch                   | CHAR       | 4        | OUI      |
+--------------------------------------------------

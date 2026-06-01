@@ -1,0 +1,22 @@
+--- TABLE DES MOTS-CLES ---
+| Mot-cle              | Code       |
+|----------------------|------------|
+| program              | PROGRAM    |
+| var                  | VAR        |
+| integer              | INTEGER    |
+| char                 | CHAR       |
+| begin                | BEGIN      |
+| end                  | END        |
+| if                   | IF         |
+| then                 | THEN       |
+| else                 | ELSE       |
+| while                | WHILE      |
+| do                   | DO         |
+| read                 | READ       |
+| readln               | READLN     |
+| write                | WRITE      |
+| writeln              | WRITELN    |
+| div                  | DIV        |
+| or                   | OR         |
+| and                  | AND        |
+----------------------------------------
