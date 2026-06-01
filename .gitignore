@@ -1,0 +1,36 @@
+# Build artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Debug symbols and profiling
+*.pdb
+*.dSYM/
+*.gcda
+*.gcno
+*.prof
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Generated outputs (keep if intentionally versioned)
+# table_ID.txt
+# table_key_words.txt
+# code_machine.txt
